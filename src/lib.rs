@@ -4,8 +4,9 @@ pub fn get_args() -> Vec<String> {
 }
 
 pub fn get_argument_at(index: usize) -> Option<String> {
-    match std::env::args().collect::<Vec<String>>().get(index){
-        Some(arg) => Some(*arg),
-        None => todo!(),
+    match get_args().get(index) {
+        Some(arg) => {
+            Some(arg.to_owned())},
+        None => None,
     }
 }
