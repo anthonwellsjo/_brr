@@ -5,7 +5,7 @@ edition = "2021"
 license = "MIT OR Apache-2.0" 
 description = "bash runner for arw tools"
 repository = "https://github.com/anthonwellsjo/brr"
-keywords = ["lib", "bash", "arw", "arw tools", "bash_life"]
+keywords = ["lib", "bash", "arw", "arw_tools", "bash_life"]
 include = [
     "**/*.rs",
     "Cargo.toml",
