@@ -1,4 +1,4 @@
-use std::process::Command;
+use std::{process::Command, fs};
 use sysinfo::{PidExt, ProcessExt, System, SystemExt};
 
 pub fn get_args() -> Vec<String> {
@@ -52,4 +52,20 @@ pub fn get_processes(name: &str, excl_current: bool) -> ProcessCount {
     }
 
     p_count
+}
+
+/// Gets db-path depending on environment and os. Creates path if not yet there.
+pub fn get_app_path(app_name: &str) -> String {
+    if cfg!(test) {
+        String::from("./test-db.sql")
+    } else {
+        match dirs::home_dir() {
+            Some(dir) => {
+                let path = dir.to_str().unwrap().to_owned() + "/Library/Application Support/" + app_name;
+                fs::create_dir_all(&path).unwrap();
+                path + "db.sql"
+            }
+            None => panic!("Could not find a home directory"),
+        }
+    }
 }
