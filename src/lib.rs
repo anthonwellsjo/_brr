@@ -61,7 +61,7 @@ pub fn get_app_path(app_name: &str) -> String {
     } else {
         match dirs::home_dir() {
             Some(dir) => {
-                let path = dir.to_str().unwrap().to_owned() + "/Library/Application Support/" + app_name;
+                let path = dir.to_str().unwrap().to_owned() + "/Library/Application Support/" + app_name + "/";
                 fs::create_dir_all(&path).unwrap();
                 path + "db.sql"
             }
