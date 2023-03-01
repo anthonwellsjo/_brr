@@ -1,4 +1,4 @@
-use std::{process::Command, fs};
+use std::{fs, process::Command};
 use sysinfo::{PidExt, ProcessExt, System, SystemExt};
 
 pub fn get_args() -> Vec<String> {
@@ -11,6 +11,17 @@ pub fn get_argument_at(index: usize) -> Option<String> {
         Some(arg) => Some(arg.to_owned()),
         None => None,
     }
+}
+
+pub fn verify_argument_type<T: std::str::FromStr>(arg: Option<String>, fallback_val: T) -> T
+where
+    T: std::fmt::Display,
+{
+    let no = match arg.unwrap_or(fallback_val.to_string()).parse::<T>() {
+        Ok(no) => no,
+        Err(_) => fallback_val,
+    };
+    no
 }
 
 pub fn get_user() -> String {
@@ -61,7 +72,10 @@ pub fn get_app_path(app_name: &str) -> String {
     } else {
         match dirs::home_dir() {
             Some(dir) => {
-                let path = dir.to_str().unwrap().to_owned() + "/Library/Application Support/" + app_name + "/";
+                let path = dir.to_str().unwrap().to_owned()
+                    + "/Library/Application Support/"
+                    + app_name
+                    + "/";
                 fs::create_dir_all(&path).unwrap();
                 path + "db.sql"
             }
