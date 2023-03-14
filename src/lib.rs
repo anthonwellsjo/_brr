@@ -6,6 +6,12 @@ pub fn get_args() -> Vec<String> {
     args[1..].to_vec()
 }
 
+pub fn get_flags() -> Vec<String> {
+    let args: Vec<String> = std::env::args().collect();
+    let flags: Vec<String> = args.iter().filter(|&s| s.chars().next().unwrap() == '-' ).cloned().collect();
+    flags
+}
+
 pub fn get_argument_at(index: usize) -> Option<String> {
     match get_args().get(index) {
         Some(arg) => Some(arg.to_owned()),
