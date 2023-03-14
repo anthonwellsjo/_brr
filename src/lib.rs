@@ -6,10 +6,28 @@ pub fn get_args() -> Vec<String> {
     args[1..].to_vec()
 }
 
-pub fn get_flags() -> Vec<String> {
+pub fn get_flags_and_options() -> Vec<Vec<String>> {
     let args: Vec<String> = std::env::args().collect();
-    let flags: Vec<String> = args.iter().filter(|&s| s.chars().next().unwrap() == '-' ).cloned().collect();
-    flags
+    let mut res: Vec<Vec<String>> = vec!(); 
+
+    let mut cur_index: Option<usize> = None;
+
+    for (index, arg) in args.iter().enumerate(){
+        println!("index {}", index);
+        if arg.chars().next().unwrap() != '-' && cur_index.is_some() {
+            res[cur_index.unwrap()].push(arg.to_owned());
+        }
+        if arg.chars().next().unwrap() == '-' {
+            println!("added at {}", index);
+            res.push(vec!(arg.to_owned()))  ;
+            cur_index = match cur_index{
+                Some(index) => Some(index + 1),
+                None => Some(0),
+            }
+        }
+    }
+
+    res
 }
 
 pub fn get_argument_at(index: usize) -> Option<String> {
