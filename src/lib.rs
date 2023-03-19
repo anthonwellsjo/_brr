@@ -13,7 +13,6 @@ pub fn get_flags_and_options() -> Vec<Vec<String>> {
     let mut cur_index: Option<usize> = None;
 
     for (index, arg) in args.iter().enumerate(){
-        println!("index {}", index);
         if arg.chars().next().unwrap() != '-' && cur_index.is_some() {
             res[cur_index.unwrap()].push(arg.to_owned());
         }
