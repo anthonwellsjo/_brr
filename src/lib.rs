@@ -8,18 +8,18 @@ pub fn get_args() -> Vec<String> {
 
 pub fn get_flags_and_options() -> Vec<Vec<String>> {
     let args: Vec<String> = std::env::args().collect();
-    let mut res: Vec<Vec<String>> = vec!(); 
+    let mut res: Vec<Vec<String>> = vec![];
 
     let mut cur_index: Option<usize> = None;
 
-    for (index, arg) in args.iter().enumerate(){
+    for (index, arg) in args.iter().enumerate() {
         if arg.chars().next().unwrap() != '-' && cur_index.is_some() {
             res[cur_index.unwrap()].push(arg.to_owned());
         }
         if arg.chars().next().unwrap() == '-' {
             println!("added at {}", index);
-            res.push(vec!(arg.to_owned()))  ;
-            cur_index = match cur_index{
+            res.push(vec![arg.to_owned()]);
+            cur_index = match cur_index {
                 Some(index) => Some(index + 1),
                 None => Some(0),
             }
@@ -34,6 +34,40 @@ pub fn get_argument_at(index: usize) -> Option<String> {
         Some(arg) => Some(arg.to_owned()),
         None => None,
     }
+}
+
+///Returns vec of all args (not including flags and options)
+pub fn get_arguments() -> Option<Vec<String>> {
+    let args: Vec<String> = std::env::args().collect();
+    let mut res: Vec<String> = vec![];
+
+    let mut cur_index: Option<usize> = None;
+
+    let mut iteration = args.iter();
+
+    //Jumps one forward to not include action
+    iteration.next();
+    iteration.next();
+
+
+    for arg in iteration {
+        if arg.chars().next().unwrap() == '-' {
+            continue;
+        }
+
+        println!("Adding arg {:?}", arg);
+        res.push(arg.to_owned());
+        cur_index = match cur_index {
+            Some(index) => Some(index + 1),
+            None => Some(0),
+        }
+    };
+
+    if res.len() < 1 {
+        return None
+    }
+
+    Some(res)
 }
 
 pub fn verify_argument_type<T: std::str::FromStr>(arg: Option<String>, fallback_val: T) -> T
