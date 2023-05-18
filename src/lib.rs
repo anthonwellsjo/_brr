@@ -17,7 +17,6 @@ pub fn get_flags_and_options() -> Vec<Vec<String>> {
             res[cur_index.unwrap()].push(arg.to_owned());
         }
         if arg.chars().next().unwrap() == '-' {
-            println!("added at {}", index);
             res.push(vec![arg.to_owned()]);
             cur_index = match cur_index {
                 Some(index) => Some(index + 1),
@@ -55,7 +54,6 @@ pub fn get_arguments() -> Option<Vec<String>> {
             continue;
         }
 
-        println!("Adding arg {:?}", arg);
         res.push(arg.to_owned());
         cur_index = match cur_index {
             Some(index) => Some(index + 1),
